@@ -1,0 +1,8 @@
+langchain
+openai
+streamlit
+python-dotenv
+numexpr
+youtube-transcript-api
+tiktoken
+faise-gpu
