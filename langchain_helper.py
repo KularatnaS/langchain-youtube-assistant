@@ -7,14 +7,14 @@ from langchain.vectorstores import FAISS
 from langchain.embeddings.openai import OpenAIEmbeddings
 
 
-def create_vector_db_from_youtube_url(video_url: str) -> FAISS:
+def create_vector_db_from_youtube_url(video_url: str, openai_api_key) -> FAISS:
     loader = YoutubeLoader.from_youtube_url(video_url)
     transcript = loader.load()
 
     text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=100)
     docs = text_splitter.split_documents(transcript)
 
-    embeddings = OpenAIEmbeddings()
+    embeddings = OpenAIEmbeddings(openai_api_key=openai_api_key)
     db = FAISS.from_documents(docs, embeddings)
     return db
 
@@ -37,7 +37,7 @@ def get_response_from_query(video_url, query, openai_api_key, k=4):
 
     chain = LLMChain(llm=llm, prompt=prompt)
 
-    db = create_vector_db_from_youtube_url(video_url)
+    db = create_vector_db_from_youtube_url(video_url, openai_api_key)
     docs = db.similarity_search(query, k)
     docs_page_content = " ".join(d.page_content for d in docs)
 
