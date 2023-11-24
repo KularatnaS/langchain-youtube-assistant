@@ -5,3 +5,4 @@ python-dotenv
 numexpr
 youtube-transcript-api
 tiktoken
+faiss-cpu
